@@ -8,20 +8,20 @@ class User():
 		self.username = username
 		self.passwordHash = sha256(password).hexdigest()
 		self.id = userid
-		self.rest_to_good_count = {}
-		self.rest_to_bad_count = {}
+		self.restid_to_good_count = {}
+		self.restid_to_bad_count = {}
 
 	def updateGood(self, restid):
-		if restid in self.rest_to_good_count:
-			self.rest_to_good_count[restid] += 1
+		if restid in self.restid_to_good_count:
+			self.restid_to_good_count[restid] += 1
 		else:
-			self.rest_to_good_count[restid] = 1
+			self.restid_to_good_count[restid] = 1
 
 	def updateBad(self, restid):
 		if restid in self.rest_to_bad_count:
-			self.rest_to_bad_count[restid] += 1
+			self.restid_to_bad_count[restid] += 1
 		else:
-			self.rest_to_bad_count[restid] = 1
+			self.restid_to_bad_count[restid] = 1
 
 
 class Restaurant():
@@ -38,9 +38,9 @@ class Restaurant():
 		self.goodCount = 0
 		self.badCount = 0
 
-	def updateGood():
+	def updateGood(self):
 		self.goodCount += 1
 
-	def updateBad():
+	def updateBad(self):
 		self.badCount += 1
 	

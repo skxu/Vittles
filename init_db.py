@@ -1,11 +1,9 @@
 from ZODB.DB import DB
 from ZODB.FileStorage import FileStorage
-from flask.ext.zodb import Dict
+from flask.ext.zodb import Dict, List
 import transaction
 
 from models import User
-
-first_user = User("Sam", "test1")
 
 storage = FileStorage('app.fs')
 conn = DB(storage)
@@ -15,11 +13,14 @@ if 'users' not in db:
 	db['users'] = Dict()
 	print('created users dict in db')
 
+if 'usernames' not in db:
+	db['usernames'] = List()
+	print('created usernames list in db')
+
 if 'restaurants' not in db:
 	db['restaurants'] = Dict()
 	print('created restaurants dict in db')
 
-db['users'][first_user.id] = first_user
 
 transaction.commit()
 conn.close()

@@ -23,6 +23,7 @@ class Search(Resource):
 		parser = reqparse.RequestParser()
 		parser.add_argument('lon', required=True, type=float, help='Longitude(degrees) format example: lon=23.23')
 		parser.add_argument('lat', required=True, type=float, help='Latitude(degrees) format example: lat=23.23')
+		parser.add_argument('location', required=True, type=str, help="location='San Francisco'")
 		args = parser.parse_args()
 
 		#make call to yelp here
@@ -37,16 +38,17 @@ class Register(Resource):
 		args = parser.parse_args()
 		
 		username = args['username']
-		if username in db['users']:
+		if username in db['usernames']:
 			return {'message':'username taken'}, 400
 		else:
-			user = User(username, args['password'])
-			db['users'][username] = user
+			
+			db['usernames'].append(username)
 
 			userid = db.get('usercount',0) + 1
 			db['usercount'] = userid
+			user = User(username, args['password'], userid)
 
-			db['users_by_id'][userid] = user
+			db['users'][userid] = user
 
 			return userid
 
@@ -79,8 +81,43 @@ class Restaurants(Resource):
 			return restid
 		
 
+class UserAction(Resource):
+	def post(self, userid):
+		parser = reqparse.RequestParser()
+		parser.add_argument('restid', required=True, type=int)
+		parser.add_argument('liked', required=True, type=bool)
+		args = parser.parse_args()
+
+		restid = args['restid']
+		#get User object
+		user = db['users'].get(userid, None)
+		if user == None:
+			return {"message":"invalid userid"}, 400
+		if args['liked']:
+			user.updateGood(restid)
+		else:
+			user.updateBad(restid)
+
+		db['users'][userid] = user
+		return {"message":"200 OKAY"}
+
+
+	def get(self, userid):
+		user = db['users'].get(userid,None)
+		if user == None:
+			return {"message":"invalid userid"}, 400
+
+		return {
+			"restid_to_good_count":user.restid_to_good_count,
+			"restid_to_bad_count":user.restid_to_bad_count
+		}
+
+
+
+
+api.add_resource(UserAction, '/api/users/<int:userid>/swipe')
 api.add_resource(Search, '/api/search')
 api.add_resource(Register, '/api/users')
 api.add_resource(Restaurants, '/api/restaurants')
 
-app.run(debug=False)
+app.run(debug=True, use_reloader=False)
