@@ -8,7 +8,7 @@ setup(
 	author='Sam Xu',
 	author_email='skx@berkeley.edu',
 	license='MIT',
-	packages=['Vittles'],
+	packages=[],
 	install_requires=[
 		'flask',
 		'flask-restful',
