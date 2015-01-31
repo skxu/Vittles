@@ -14,6 +14,5 @@ setup(
 		'flask-restful',
 		'Flask-ZODB',
 		'oauth2',
-		'Tkinter'
 	],
 	zip_safe=False)
