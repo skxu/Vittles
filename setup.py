@@ -1,0 +1,22 @@
+from setuptools import setup
+
+setup(
+	name='Vittles',
+	version='0.1',
+	description='Yelp+Tinder',
+	url='http://github.com/skxu/Vittles',
+	author='Sam Xu',
+	author_email='skx@berkeley.edu',
+	license='MIT',
+	packages=['Vittles'],
+	install_requires=[
+		'flask',
+		'flask-restful',
+		'Flask-ZODB',
+		'oauth2',
+		'urllib2',
+		'urllib',
+		'json'
+		'transaction'
+	],
+	zip_safe=False)
