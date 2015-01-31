@@ -13,8 +13,6 @@ setup(
 		'flask',
 		'flask-restful',
 		'Flask-ZODB',
-		'oauth2',
-		'urllib2',
-		'transaction'
+		'oauth2'
 	],
 	zip_safe=False)
