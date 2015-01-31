@@ -16,7 +16,7 @@ setup(
 		'oauth2',
 		'urllib2',
 		'urllib',
-		'json'
+		'json',
 		'transaction'
 	],
 	zip_safe=False)
