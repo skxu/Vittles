@@ -1,5 +1,4 @@
 import json
-import urllib
 import urllib2
 import oauth2
 

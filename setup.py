@@ -15,7 +15,6 @@ setup(
 		'Flask-ZODB',
 		'oauth2',
 		'urllib2',
-		'urllib',
 		'transaction'
 	],
 	zip_safe=False)
