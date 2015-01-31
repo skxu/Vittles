@@ -83,5 +83,4 @@ api.add_resource(Search, '/search')
 api.add_resource(Register, '/users')
 api.add_resource(Restaurants, '/restaurants')
 
-if __name__ == '__main__':
-	app.run(debug=True)
+app.run(debug=True)
