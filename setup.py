@@ -13,6 +13,7 @@ setup(
 		'flask',
 		'flask-restful',
 		'Flask-ZODB',
-		'oauth2'
+		'oauth2',
+		'python-tk'
 	],
 	zip_safe=False)
