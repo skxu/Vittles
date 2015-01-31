@@ -79,8 +79,8 @@ class Restaurants(Resource):
 			return restid
 		
 
-api.add_resource(Search, '/search')
-api.add_resource(Register, '/users')
-api.add_resource(Restaurants, '/restaurants')
+api.add_resource(Search, '/api/search')
+api.add_resource(Register, '/api/users')
+api.add_resource(Restaurants, '/api/restaurants')
 
 app.run(debug=False)
