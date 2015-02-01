@@ -8,7 +8,6 @@ var App = React.createClass({
   
   componentDidMount: function() {
     /**load stuff*/
-    console.log("testtttt");
     var xmlHttp = null;
     xmlHttp = new XMLHttpRequest();
     xmlHttp.open(
@@ -17,7 +16,7 @@ var App = React.createClass({
       true
     );
     
-    xmlHttp.setRequestHeader("username","test");
+    xmlHttp.setRequestHeader("username","test2");
     xmlHttp.setRequestHeader("password","test");
     
     xmlHttp.onload = function(e) {

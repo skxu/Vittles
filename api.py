@@ -112,14 +112,14 @@ class Restaurants(Resource):
 				'lat':restaurant.lat,
 				'lon':restaurant.lon,
 				'id':restaurant.id,
-				'good_count':restaurant.good_count
-				'bad_count':restaurant.bad_count
-				'categories':restaurant.categories
-				'yelp_count':restaurant.yelp_count
-				'yelp_rating':restaurant.yelp_rating
-				'address':restaurant.address
-				'city':restaurant.city
-				'zip_code':restaurant.zip_code
+				'good_count':restaurant.good_count,
+				'bad_count':restaurant.bad_count,
+				'categories':restaurant.categories,
+				'yelp_count':restaurant.yelp_count,
+				'yelp_rating':restaurant.yelp_rating,
+				'address':restaurant.address,
+				'city':restaurant.city,
+				'zip_code':restaurant.zip_code,
 				'img_url':restaurant.img_url
 			}
 		else:
