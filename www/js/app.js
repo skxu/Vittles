@@ -20,8 +20,8 @@ var App = React.createClass({
     
     xmlHttp.onload = function(e) {
       console.log(xmlHttp.response); 
-      this.setState({'userid': = xmlHttp.response});
-    }.bind(this);
+      this.setState({'userid': xmlHttp.response});
+    };
     
     xmlHttp.send();
       
