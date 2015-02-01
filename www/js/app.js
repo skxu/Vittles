@@ -16,14 +16,17 @@ var App = React.createClass({
       true
     );
     
-    params = "username=test&password=test"
+    data = new FormData();
+    data.append('username','test123');
+    data.append('password','password');
+    
     
     xmlHttp.onload = function(e) {
       console.log(xmlHttp.responseText);
       this.setState({'userid': xmlHttp.responseText.userid});
     };
     
-    xmlHttp.send(params);
+    xmlHttp.send(data);
       
       
   },
