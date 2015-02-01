@@ -1,5 +1,6 @@
 var App = React.createClass({
   getInitialState: function() {
+    
     return {
       userid: '',
     }
@@ -7,6 +8,7 @@ var App = React.createClass({
   
   componentDidMount: function() {
     /**load stuff*/
+    console.log("testtttt");
     var xmlHttp = null;
     xmlHttp = new XMLHttpRequest();
     xmlHttp.open(
