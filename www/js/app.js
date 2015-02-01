@@ -8,6 +8,7 @@ var App = React.createClass({
   
   componentDidMount: function() {
     /**load stuff*/
+    var _this = this;
     var xmlHttp = null;
     xmlHttp = new XMLHttpRequest();
     xmlHttp.open(
@@ -17,13 +18,13 @@ var App = React.createClass({
     );
     
     data = new FormData();
-    data.append('username','test123');
+    data.append('username','test3');
     data.append('password','password');
     
     
     xmlHttp.onload = function(e) {
       console.log(xmlHttp.responseText);
-      this.setState({'userid': xmlHttp.responseText.userid});
+      _this.setState({'userid': xmlHttp.responseText.userid});
     };
     
     xmlHttp.send(data);
