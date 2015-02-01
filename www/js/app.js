@@ -19,6 +19,11 @@ var App = React.createClass({
     
     params = "username=test&password=test"
     
+    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    http.setRequestHeader("Content-length", params.length);
+    http.setRequestHeader("Connection", "close");
+
+    
     xmlHttp.onload = function(e) {
       console.log(xmlHttp.response); 
       this.setState({'userid': xmlHttp.response});
