@@ -18,18 +18,44 @@ var App = React.createClass({
     );
     
     data = new FormData();
-    data.append('username','test5');
+    data.append('username','test6');
     data.append('password','password');
     
     
     xmlHttp.onload = function(e) {
       console.log(xmlHttp.responseText);
       _this.setState({'userid': xmlHttp.responseText.userid});
-    }.bind(this);
+    };
     
     xmlHttp.send(data);
       
       
+  },
+  
+  
+  register: function() {
+    var _this = this;
+    var xmlHttp = null;
+    xmlHttp = new XMLHttpRequest();
+    xmlHttp.open(
+      "POST", 
+      "http://vittles.code.io/api/users",
+      true
+    );
+    
+    data = new FormData();
+    data.append('username','test6');
+    data.append('password','password');
+    
+    
+    xmlHttp.onload = function(e) {
+      console.log(xmlHttp.responseText);
+      console.log(xmlHttp.responseText.userid);
+      _this.setState({'userid': 'lol'+xmlHttp.responseText.userid});
+    };
+    
+    xmlHttp.send(data);
+  
   },
   
   render: function() {
