@@ -1,12 +1,31 @@
 var App = React.createClass({
   getInitialState: function() {
     return {
-      rankings: '',
+      userid: '',
     }
   },
   
   componentDidMount: function() {
     /**load stuff*/
+    var xmlHttp = null;
+    xmlHttp = new XMLHttpRequest();
+    xmlHttp.open(
+      "POST", 
+      "http://vittles.code.io/api/users",
+      true
+    );
+    
+    xmlHttp.setRequestHeader("username","test");
+    xmlHttp.setRequestHeader("password","test");
+    
+    xmlHttp.onload = function(e) {
+      console.log(xmlHttp.response); 
+      this.setState({'userid': = xmlHttp.response});
+    }.bind(this);
+    
+    xmlHttp.send();
+      
+      
   },
   
   render: function() {
@@ -15,6 +34,7 @@ var App = React.createClass({
     return (
       <div>
         <p>Coming Soon.</p>
+        <p>User ID: {this.state.userid}</p>
       </div>
     );
   }
