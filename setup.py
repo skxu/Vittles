@@ -14,5 +14,6 @@ setup(
 		'flask-restful',
 		'Flask-ZODB',
 		'oauth2',
+		'apscheduler'
 	],
 	zip_safe=False)

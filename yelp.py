@@ -16,11 +16,12 @@ class Yelp():
 
 
 
-	def search(self, lat, lon):
+	def search(self, lat, lon, offset):
 		params = {
 				'term':self.DEFAULT_TERM,
 				'location':self.DEFAULT_LOCATION,
-				'cll':str(lat)+","+str(lon)
+				'cll':str(lat)+","+str(lon),
+				'offset':offset
 				}
 		url = self.YELP_BASE+"search/"
 

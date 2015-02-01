@@ -1,3 +1,4 @@
+import traceback
 import flask
 from yelp import Yelp
 from flask import Flask
@@ -6,6 +7,11 @@ from flask.ext.restful import Resource, Api, reqparse
 from flask.ext.zodb import ZODB, Dict
 from models import User, Restaurant
 
+
+from apscheduler.schedulers.background import BackgroundScheduler
+
+
+scheduler = BackgroundScheduler()
 
 yelp = Yelp()
 app = Flask("Vittles")
@@ -17,17 +23,59 @@ api = Api(app)
 
 
 
-
 class Search(Resource):
-	def get(self):
+	def get(self, userid):
 		parser = reqparse.RequestParser()
 		parser.add_argument('lon', required=True, type=float, help='Longitude(degrees) format example: lon=23.23')
 		parser.add_argument('lat', required=True, type=float, help='Latitude(degrees) format example: lat=23.23')
 		parser.add_argument('location', required=True, type=str, help="location='San Francisco'")
 		args = parser.parse_args()
 
+		data = None
 		#make call to yelp here
-		data = yelp.search(args['lat'],args['lon'])
+		try:
+			user = User.getUserById(db, userid)
+			print("userid:", userid)
+			if user == None:
+				return {"message":"invalid userid"}, 400
+
+			offset = user.getOffset()
+			data = yelp.search(args['lat'],args['lon'], offset)
+			restaurants = data['businesses']
+			user.incrOffset(len(restaurants))
+			User.save(db, user)
+			for restaurant in restaurants:
+				#parse yelp metadata
+				name = restaurant['name']
+				location = restaurant['location']
+				lat = float(location['coordinate']['latitude'])
+				lon = float(location['coordinate']['longitude'])
+				pos = (lat, lon)
+				if Restaurant.checkIfExists(db, pos):
+					continue
+
+				yelp_categories = restaurant['categories']
+				categories = []
+				for group in yelp_categories:
+					categories.append(group[0]) #yelp format is [["Sam", "sam"], ["Blah","blah"]]
+
+				address = location['address']
+				city = location['city']
+				zip_code = location['postal_code']
+				yelp_rating = restaurant['rating']
+				yelp_count = restaurant['review_count']
+				img_url = restaurant['image_url']
+
+				restid = db.get('restcount',0) + 1
+				db['restcount'] = restid
+				restObj = Restaurant(name, pos, restid, categories, yelp_count, yelp_rating, address, city, zip_code, img_url)
+
+				Restaurant.save(db, restObj)
+
+		except Exception as e:
+			print traceback.format_exc()
+		
+
 		return data
 
 class Register(Resource):
@@ -50,7 +98,7 @@ class Register(Resource):
 
 			db['users'][userid] = user
 
-			return userid
+			return {"userid":userid}
 
 class Restaurants(Resource):
 	def get(self):
@@ -59,7 +107,21 @@ class Restaurants(Resource):
 		restid = parser.parse_args()['id']
 		restaurant = db['restaurants'].get(restid, None)
 		if restaurant != None:
-			return {'name':restaurant.name}
+			return {
+				'name':restaurant.name,
+				'lat':restaurant.lat,
+				'lon':restaurant.lon,
+				'id':restaurant.id,
+				'good_count':restaurant.good_count
+				'bad_count':restaurant.bad_count
+				'categories':restaurant.categories
+				'yelp_count':restaurant.yelp_count
+				'yelp_rating':restaurant.yelp_rating
+				'address':restaurant.address
+				'city':restaurant.city
+				'zip_code':restaurant.zip_code
+				'img_url':restaurant.img_url
+			}
 		else:
 			return {'message':'restaurant id not found'}, 400
 
@@ -78,7 +140,7 @@ class Restaurants(Resource):
 			restaurant = Restaurant(args['name'], pos, restid)
 			db['restaurants'][pos] = restaurant		
 
-			return restid
+			return {"restid":restid}
 		
 
 class UserAction(Resource):
@@ -116,7 +178,7 @@ class UserAction(Resource):
 
 
 api.add_resource(UserAction, '/api/users/<int:userid>/swipe')
-api.add_resource(Search, '/api/search')
+api.add_resource(Search, '/api/search/<int:userid>')
 api.add_resource(Register, '/api/users')
 api.add_resource(Restaurants, '/api/restaurants')
 
