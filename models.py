@@ -63,8 +63,8 @@ class Restaurant():
 		self.lat = pos[0]
 		self.lon = pos[1]
 		self.id = restid
-		self.goodCount = 0
-		self.badCount = 0
+		self.good_count = 0
+		self.bad_count = 0
 
 		#yelp metadata
 		self.categories = categories
@@ -77,10 +77,10 @@ class Restaurant():
 
 
 	def updateGood(self):
-		self.goodCount += 1
+		self.good_count += 1
 
 	def updateBad(self):
-		self.badCount += 1
+		self.bad_count += 1
 
 	#db - flask-ZODB instance
 	@staticmethod
